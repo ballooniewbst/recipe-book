@@ -33,7 +33,7 @@ details[open] summary b{color:var(--green)}
 .body{background:var(--tint);padding:14px 18px;margin-bottom:14px;border-radius:6px}
 .body h3{font-size:.95rem;margin:0 0 4px;color:var(--green)}
 .body ul{margin:0 0 12px;padding-left:20px}
-.body p{margin:0}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}.steps li{counter-increment:s;padding:8px 0 8px 0;border-top:1px solid var(--line)}.steps li::before{content:"Step " counter(s);display:block;font-weight:600;color:var(--green);font-size:.9rem}
 #none{display:none;color:var(--mute);padding:40px 0}
 footer{color:var(--mute);font-size:.9rem;padding:40px 0 60px}
 </style>
@@ -115,7 +115,7 @@ const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&qu
 function render(){const q=$("#q").value.trim().toLowerCase();let html="",shown=0;
 D.forEach(([name,items])=>{if(cat!=="All"&&cat!==name)return;
 const m=items.filter(r=>!q||r.join(" ").toLowerCase().includes(q));if(!m.length)return;shown+=m.length;
-html+=`<section><h2>${esc(name)}</h2>`+m.map(([n,d,i,s])=>`<details><summary><b>${esc(n)}</b><span>${esc(d)}</span></summary><div class="body"><h3>Ingredients</h3><ul>${i.split(", ").map(x=>`<li>${esc(x)}</li>`).join("")}</ul><h3>Method</h3><p>${esc(s)}</p></div></details>`).join("")+`</section>`});
+html+=`<section><h2>${esc(name)}</h2>`+m.map(([n,d,i,s])=>`<details><summary><b>${esc(n)}</b><span>${esc(d)}</span></summary><div class="body"><h3>Ingredients</h3><ul>${i.split(", ").map(x=>`<li>${esc(x)}</li>`).join("")}</ul><h3>Method</h3><ol class="steps">${s.split(/(?<=\.)\s+/).map(x=>`<li>${esc(x)}</li>`).join("")}</ol></div></details>`).join("")+`</section>`});
 list.innerHTML=html;$("#none").style.display=shown?"none":"block"}
 $("#q").oninput=render;render();
 </script>
